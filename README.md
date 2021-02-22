@@ -1,2 +1,60 @@
 # Java-ORM-Standard-JPA
 자바 ORM 표준 JPA 학습공간입니다.
+
+
+
+## SQL 중심적인 개발의 문제점
+
+### 객체와 관계형 데이터베이스의 차이
+
+1. 상속 (객체: 상속 관계 - Table: 슈퍼타입 서브타입 관계)
+2. 연관관계 (객체: 참조 - 테이블: 외래키)
+3. 데이터 타입
+4. 데이터 식별 방법
+
+#### 자바 컬렉션의 조회 객체와 SQL을 통한 조회는 다른 결과를 일으킨다.
+
+
+
+## JPA가 무엇인가?
+
+### JPA: Java Persistence API
+
+자바 진영의 **ORM** 기술 표준
+
+애플리케이션과 JDBC 사이에서 동작(개발자가 Query를 작성할 필요가 없음)
+
+EJB(Entity Bean 자바 표준) ➡ Hibernate(오픈 소스) ➡ JPA(자바 표준)
+
+
+
+### ORM: Object-relational mapping(객체 관계 매핑)
+
+ORM 프레임워크가 객체와 관계형 데이터베이스사이에서 연결고리가 된다.
+
+
+
+### JPA를 왜 사용해야 하는가?
+
+#### 생상성
+
+- 저장: jpa.persist(member)
+- 조회: Member member = jpa.find(memberId)
+
+- 수정: member.setName("변경될 이름")
+- 삭제: jpa.remove(member)
+
+#### 자바 객체와 관계형 데이터베이스의 패러다임 불일치를 해결
+
+#### JPA의 성능 최적화 기능
+
+1. 1차 캐시와 동일성(identity) 보장
+2. 트랙잭션을 지원하는 쓰기 지연(transactional write-behind)
+3. 지연 로딩(Lazy Loading)
+   - 지연 로딩: 객체가 실제 사용될 때 로딩
+   - 즉시 로딩: JOIN SQL로 한번에 연관된 객체까지 미리 조회
+
+
+
+
+
