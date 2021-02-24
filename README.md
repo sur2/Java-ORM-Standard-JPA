@@ -12,7 +12,8 @@
 3. 데이터 타입
 4. 데이터 식별 방법
 
-#### 자바 컬렉션의 조회 객체와 SQL을 통한 조회는 다른 결과를 일으킨다.
+**자바 컬렉션의 조회 객체와 SQL을 통한 조회는 다른 결과를 일으킨다.**
+
 
 
 
@@ -46,6 +47,8 @@ ORM 프레임워크가 객체와 관계형 데이터베이스사이에서 연결
 
 #### 자바 객체와 관계형 데이터베이스의 패러다임 불일치를 해결
 
+- 관계형 데이터베이스의 Query를 자바 컬랙션 처럼 사용할 수 있다.
+
 #### JPA의 성능 최적화 기능
 
 1. 1차 캐시와 동일성(identity) 보장
@@ -55,6 +58,25 @@ ORM 프레임워크가 객체와 관계형 데이터베이스사이에서 연결
    - 즉시 로딩: JOIN SQL로 한번에 연관된 객체까지 미리 조회
 
 
+
+## JPA Project
+
+### 프로젝트 생성
+
+1. 데이터베이스 생성(H2 Database)
+2. Maven 또는 Gradle Project 생성
+3. 의존성 주입(JPA Hibernate: javax.persistence-api, H2 Database ) 
+   JPA라는 인터페이스의 구현체로 Hibernate를 사용
+
+### JPA 설정하기
+
+- JPA 설정파일: `/META-INF/persistence.xml`
+  - Dialect 속성: 데이터베이스 고유의 언어
+
+### JPA 동작 확인
+
+- JpaMain 클래스
+  - `Persistence.createEntityManagerFactory{persistenceUnitName}`
 
 
 
