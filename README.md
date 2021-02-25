@@ -68,15 +68,83 @@ ORM 프레임워크가 객체와 관계형 데이터베이스사이에서 연결
 3. 의존성 주입(JPA Hibernate: javax.persistence-api, H2 Database ) 
    JPA라는 인터페이스의 구현체로 Hibernate를 사용
 
+
+
 ### JPA 설정하기
 
 - JPA 설정파일: `/META-INF/persistence.xml`
   - Dialect 속성: 데이터베이스 고유의 언어
 
+
+
 ### JPA 동작 확인
 
 - JpaMain 클래스
+  
   - `Persistence.createEntityManagerFactory{persistenceUnitName}`
+  
+- 객체와 테이블 매핑
 
+  ```sql
+  CREATE TABLE MEMBER (
+      id bigint not null,
+      name varchar(255),
+      primary key (id)
+  );
+  ```
+  
+  ```java
+  @Entity
+  //@Table(name = "Member") 테이블명이 클래스명과 같으면 생략가능
+  public class Member {
+      @Id
+      private Long id;
+      //@Column(name = "username") 칼럼이 인스턴스변수와 같으면 생략가능
+      private String name;
+  
+      public Long getId() {
+          return id;
+      }
+  
+      public void setId(Long id) {
+          this.id = id;
+      }
+  
+      public String getName() {
+          return name;
+      }
+  
+      public void setName(String name) {
+          this.name = name;
+      }
+  }
+  ```
+
+- 트랜잭션(작업의 단위)
+
+  - 트랜잭션 얻기&시작: ``EntityTransaction tx = entityManager.getTransaction(); tx.begin();``
+  - 트랜잭션 커밋: ``tx.commit();``
+  
+
+
+
+### 주의
+
+- **EntityManagerFactory**는 하나만 생성해서 애플리케이션 전체에서 공유
+- **EntityManager**는 쓰레드 간에 공유해서는 안된다.(사용하고 버려야함!)
+- **JPA의 모든 데이터 변경은 트랜잭션 안에서 실행**
+
+
+
+### JPQL (테이블이 아닌 엔티티 객체 중심으로 쿼리를 사용할 수 있다.)
+
+- SQL과 유사한 문법을 가짐, SELECT, FROM, WHERE, GROUP BY, HAVING, JOIN 지원
+
+```java
+List<Member> result = em.createQuery("select m from Member as m", Member.class)
+                    .setFirstResult(5) // pagination(페이징) 가능
+                    .setMaxResults(8) // 5번 부터 8개 조회
+                    .getResultList();
+```
 
 
