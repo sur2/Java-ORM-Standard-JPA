@@ -171,6 +171,57 @@ List<Member> result = em.createQuery("select m from Member as m", Member.class)
 
 ### 플러시
 
+**영속성 컨텍스트의 변경내용을 데이터베이스에 반영/동기화**(1차 캐시가 지워지지 않음)
+**트랙잭션이라는 작업 단위가  중요 ➡ 커밋 직전에만 동기화하면 됨**
+
+#### 영속성 컨텍스트를 플러시하는 방법
+
+```java
+// 1. 강제 플러시
+entityManager.flush();
+// 2. commit 시 자동 플러시
+entityTransaction.commit();
+// 3. JPQL 쿼리 실행 시 자동으로 플러시 호출
+query = entity.createQuery(sqlQuery);
+List<Object> list = query.getResultList();
+```
+
+#### 플러시 모드 옵션
+
+``entityManager.setFlushMode(FlushModeType.COMMIT)``
+
+- FlushModeType.AUTO: 커밋이나 쿼리를 실행할 때 플러시(기본값)
+- FlushModeType.COMMIT: 커밋할 때만 플러시
+
+
+
+### 준영속 상태
+
+**엔티티가 영속성 컨텍스트에서 분리(detached)**
+
+**영속성 컨텍스트가 제공하는 기능을 사용할 수 없음**
+
+```java
+// 특정 엔티티만 분리
+entityManager.detach(entity);
+// 모든 엔티티에 대해 영속성 컨텍스트 초기화
+entityManager.clear();
+// 영속성 컨텍스트 종료
+entityManager.close();
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
