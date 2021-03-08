@@ -212,17 +212,69 @@ entityManager.close();
 
 
 
+## 엔티티 매핑
+
+### 객체와 테이블 매핑
+
+#### @Entity
+
+-	JPA가 관리하는 엔티티이다. 
+
+- 주의: 기본 생성자 필수, final, enum, interface, inner 클래스에는 사용 불가
+
+#### @Table
+
+- @Table은 엔티티와 매핑할 테이블 지정
 
 
 
+### 데이터베이스 스키마 자동 생성
+
+- DDL을 애플리케이션 실행 시점에서 자동 생성
+
+#### 주의: 운영 장비에는 절대 create, create-drop, update를 사용하면 안된다.
+
+#### DDL 생성 기능
+
+- @Column으로 각 컬럼에 제약조건을 설정할 수 있다.
+- JPA의 실행 로직에는 영향을 주지 않는다.
 
 
 
+### 필드와 컬럼 매핑
+
+#### @Id
+
+- 테이블 ID
+
+#### @Column
+
+- name: 필드와 매핑할 테이블의 칼럼 이름
+- insertable, updateable: insert, update 반영에 대한 true/false
+- nullable(DDL): not null에 대한 true/false
+- unique(DDL): unique 제약 조건 true/false
+- columnDefinition(DDL): 데이터베이스 칼럼 정보를 직접 줄 수 있다.(varchar(100), default 'EMPTY')
+- length(DDL): 문자 길이의 제약조건, 엔티티의 String 타입에만 사용한다.
+- precision, scale(DDL): 범위가 큰 숫자나 정밀한 소수점을 나타낼 때 사용
+
+#### @Enumerated
+- EnumType.ORDINAL: enum 순서를 DB에 저장 (Default)
+- EnumType.STRING: enum 이름을 DB에 저장
+
+#### @Temporal
+
+- TemporalType.DATE, TemporalType.TIME, TemporalType.TIMESTAMP를 적용하여 사용한다.
+- java 8 기준으로 LocolDate, LocalDateTime 타입이 추가되어 @Temporal를 사용하지 않아도 된다.
+
+#### @Lob
+- 길이가 긴 문자열(큰 컨텐츠)
+- 문자열은 CLOB, 나머지는 BLOB으로 매핑된다.
+
+#### @Transient
+
+- 엔티티 매핑에서 제외할 인스턴스 변수
 
 
 
-
-
-
-
+### 기본 키 매핑
 

@@ -40,14 +40,15 @@ public class JpaMain {
 
             // 비영속
             Member member = new Member();
-            member.setId(100L);
-            member.setName("HelloJPA");
+            member.setId(2L);
+            member.setUsername("B");
+            member.setRoleType(RoleType.ADMIN);
             // 영속
             em.persist(member);
             // 준영속
-            em.detach(member);
+            //em.detach(member);
             // 삭제
-            em.remove(member);
+            //em.remove(member);
 
             ex.commit();
         } catch (Exception e) {

@@ -15,7 +15,15 @@
             <property name="hibernate.show_sql" value="true"/>
             <property name="hibernate.format_sql" value="true"/>
             <property name="hibernate.use_sql_comments" value="true"/>
-            <!--<property name="hibernate.hbm2ddl.auto" value="create" />-->
+            <!-- value 만큼 SQL 저장소에 Query를 모아서 한 번에 DB에 commit 요청-->
+            <property name="hibernate.jdbc.batch_size" value="10"/>
+            <!-- value에 따라 DDL 생성 -->
+            <!-- create: 기존 table drop 후 다시 table create -->
+            <!-- create-drop: create 옵션 후 애플리케이션이 종료될 때 table drop -->
+            <!-- update: 기존 table에서 추가된 부분만 반영(제거는 안됨) -->
+            <!-- validate: 엔티티와 table이 정상적으로 매핑되었는지 확인 -->
+            <!-- none: hbm2ddl.auto을 사용하지 않음 -->
+            <property name="hibernate.hbm2ddl.auto" value="create" />
         </properties>
     </persistence-unit>
 </persistence>
