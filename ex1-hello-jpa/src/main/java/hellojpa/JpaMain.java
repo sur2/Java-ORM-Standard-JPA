@@ -40,9 +40,8 @@ public class JpaMain {
 
             // 비영속
             Member member = new Member();
-            member.setId(2L);
-            member.setUsername("B");
-            member.setRoleType(RoleType.ADMIN);
+            member.setUserName("A");
+
             // 영속
             em.persist(member);
             // 준영속
