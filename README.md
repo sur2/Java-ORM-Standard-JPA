@@ -301,3 +301,15 @@ entityManager.close();
 
 
 
+## 연관관계 매핑 기초
+
+### 단방향 연관관계
+
+```java
+// Member Entity에서 작성 시
+@ManyToOne // Member와 Team의 관계를 N(Member) : 1(Team)로 연관 짓는다.
+@JoinColumn(name = "TEAM_ID") // TEAM_ID가 외래키 역할임을 JoinColumn으로 명시한다.
+private Team team; // 즉, Member 테이블의 외래키 TEAM.TEAM_ID 테이블 연관관계를 객체 연관관계로 보여준다.
+```
+
+- 테이블 연관관계를 객체 연관관계로 모델링했다.
