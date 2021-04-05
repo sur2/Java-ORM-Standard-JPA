@@ -15,6 +15,11 @@ public class Team {
     @OneToMany(mappedBy = "team")
     private List<MemberT> members = new ArrayList<>();
 
+    public void addMember(MemberT member) {
+        member.setTeam(this);
+        this.members.add(member);
+    }
+
     public List<MemberT> getMembers() {
         return members;
     }

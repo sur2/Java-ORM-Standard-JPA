@@ -343,10 +343,84 @@ private List<Member> members = new ArrayList<>();
 
 - **연관관계의 주인만이 외래 키를 관리(등록, 수정)**
 - **주인이 아닌쪽은 읽기만 가능**
-- 주인은 mappedBy 속성을 사용해서는 안됨
+- 주인은 mappedBy 속성을 사용해서는 안됨(mappedBy는 read만 하기 때문)
 - 주인이 아닌 엔티티는 mappedBy를 사용하여 연관관계의 주인을 지정(외래키)
 - 누구를 연관관계의 주인(Onwer)로 할 것인가?
-  - 외래 키가 있는 곳을 주인으로 할 것(**테이블 연관관계에서 외래 키를 가지고 있는 테이블에 대한 엔티티**)
+  - 외래 키가 있는 곳을 주인으로 할 것(**테이블 연관관계에서 외래 키를 가지고 있는 테이블에 대한 엔티티**) 
 
 #### 주의점
 
+- 역방향으로 연관관계를 설정할 경우 참조되지 않음
+
+  ```java
+  // 연관관계의 주인이 Member인 경우
+  Team team = new Team();
+  team.setName("teamA");
+  em.persist(team);
+  
+  Member member = new Memeber();
+  member.setName("memberA");
+  
+  // 역방향(주인이 아닌 방향)만 연관관계가 설정된 경우
+  team.getMembers().add(member);
+  
+  // member.setTeam(team); 정방향으로 해주어야 함, Member가 주인이기 때문
+  
+  em.persist(member);
+  ```
+
+- 정방향 연관관계 뿐만 아니라 **양쪽 모두 값을 설정**해주어야 함
+
+  ```java
+  // 연관관계의 주인이 Member인 경우
+  Team team = new Team();
+  team.setName("teamA");
+  em.persist(team);
+  
+  Member meber = new Memeber();
+  member.setName("memberA");
+  
+  // 정방향에서 연관관계 설정
+  member.setTeam(team);
+  em.persist(member);
+  
+  // 정방향에서 설정된 연관관계에 따라서 값을 저장
+  team.getMembers().add(member);
+  ```
+
+- 권장 방법: 연관관계에서 양쪽 값 모두 설정하는 연관관계 편의 메서드 사용
+
+  ```java
+  // 두 연관관계 중 하나의 메서드만 사용하는 것을 권장
+  @Entity(name = "MEMBER")
+  public class Member {
+  	/* Columns */
+      // 연관관계 편의 
+  	public void changeTeam(Team team) { 
+  		this.team = team;
+  		team.getMembers().add(this);
+  	}
+  }
+  
+  @Entity(name = "TEAM")
+  public class Team {
+  	/* Columns */
+      // 연관관계 편의
+      public void addMember(MemberT member) {
+          member.setTeam(this);
+          this.members.add(member);
+      }
+  }
+  ```
+
+- 무한루프를 조심해야 한다.
+
+  - 조회할 때 양쪽에서 서로 참조하여 무한루프에 빠질 수 있다!
+  - 예) toString(), lombok, JSON 생성 라이브러리(컨트롤러에서 엔티티 자체를 반환하지 말자! 대안으로 DTO를 반환)
+
+#### 양방향 매핑 정리
+
+- **단방향 매핑만으로도 이미 연관관계 매핑은 완료**(단방향 매핑 이후 더 이상 테이블에 영향을 주지 않음)
+- 양방향 매핑을 필요할 때 추가해주면 된다. (JPQL 역방향 탐색)
+- 연관관계의 주인을 정하는 기준
+  - **연관관계의 주인은 외래 키의 위치를 기준으로 정해야 한다.** (비즈니스 로직 X)

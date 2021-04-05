@@ -24,10 +24,13 @@ public class JpaMain {
             MemberT member = new MemberT();
             member.setUsername("member01");
             member.setTeam(team);
+
+            team.getMembers().add(member);
+
             em.persist(member);
 
-            em.flush();
-            em.clear();
+            //em.flush();
+            //em.clear();
 
             MemberT findMemberT = em.find(MemberT.class, member.getId());
             List<MemberT> memberTs = findMemberT.getTeam().getMembers();
@@ -38,6 +41,7 @@ public class JpaMain {
             }
 
             tx.commit();
+
         } catch (Exception e) {
             tx.rollback();
         } finally {
