@@ -16,8 +16,8 @@ public class Team {
     private List<MemberT> members = new ArrayList<>();
 
     public void addMember(MemberT member) {
-        member.setTeam(this);
         this.members.add(member);
+        member.setTeam(this);
     }
 
     public List<MemberT> getMembers() {

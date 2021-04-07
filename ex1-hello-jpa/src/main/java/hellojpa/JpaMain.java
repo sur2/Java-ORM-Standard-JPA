@@ -8,46 +8,28 @@ import java.util.List;
 
 public class JpaMain {
     public static void main(String[] args) {
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("hello");
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("test");
         EntityManager em = emf.createEntityManager();
         EntityTransaction ex = em.getTransaction();
         ex.begin();
         try {
-            /* INSERT
+
+            Team team = new Team();
+            team.setName("teamA");
+            em.persist(team);
+
             Member member = new Member();
-            member.setId(2L);
-            member.setName("HelloB");
-
+            member.setUserName("memberA");
+            //member.setTeam(team);
+            member.changeTeam(team);
             em.persist(member);
-            */
 
-            // SELECT
-            /*Member findMember = em.find(Member.class, 1L);
-            System.out.println("findMember.id: " + findMember.getId());
-            System.out.println("findMember.name: " + findMember.getName());*/
+            Member findMember = em.find(Member.class, member.getId());
+            List<Member> members = findMember.getTeam().getMembers();
 
-            // UPDATE
-            //findMember.setName("HelloA");
-
-            // JPQL
-            /*List<Member> result = em.createQuery("select m from Member as m", Member.class)
-                    .setFirstResult(5)
-                    .setMaxResults(8)
-                    .getResultList();
-            for (Member member : result) {
-                System.out.println("member.name: " + member.getName());
-            }*/
-
-            // 비영속
-            Member member = new Member();
-            member.setUserName("A");
-
-            // 영속
-            em.persist(member);
-            // 준영속
-            //em.detach(member);
-            // 삭제
-            //em.remove(member);
+            for (Member m : members) {
+                System.out.println("m = " + m.getUserName());
+            }
 
             ex.commit();
         } catch (Exception e) {
