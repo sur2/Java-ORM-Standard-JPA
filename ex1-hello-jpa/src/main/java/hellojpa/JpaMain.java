@@ -5,6 +5,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import java.util.List;
+import java.util.concurrent.locks.Lock;
 
 public class JpaMain {
     public static void main(String[] args) {
@@ -14,22 +15,18 @@ public class JpaMain {
         ex.begin();
         try {
 
-            Team team = new Team();
-            team.setName("teamA");
-            em.persist(team);
+            Locker locker = new Locker();
+            locker.setName("lockerA");
+            em.persist(locker);
 
             Member member = new Member();
             member.setUserName("memberA");
-            //member.setTeam(team);
-            member.changeTeam(team);
+            member.setLocker(locker);
+            locker.setMember(member);
             em.persist(member);
 
-            Member findMember = em.find(Member.class, member.getId());
-            List<Member> members = findMember.getTeam().getMembers();
-
-            for (Member m : members) {
-                System.out.println("m = " + m.getUserName());
-            }
+            Locker findLocker = em.find(Locker.class, member.getLocker().getId());
+            System.out.println(findLocker.getMember().getUserName());
 
             ex.commit();
         } catch (Exception e) {
