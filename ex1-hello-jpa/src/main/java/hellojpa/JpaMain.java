@@ -15,18 +15,19 @@ public class JpaMain {
         ex.begin();
         try {
 
-            Locker locker = new Locker();
-            locker.setName("lockerA");
-            em.persist(locker);
+            Movie movie = new Movie();
+            movie.setDirector("movie_director");
+            movie.setActor("movie_actor");
+            movie.setName("movie_name");
+            movie.setPrice(10000);
 
-            Member member = new Member();
-            member.setUserName("memberA");
-            member.setLocker(locker);
-            locker.setMember(member);
-            em.persist(member);
+            em.persist(movie);
 
-            Locker findLocker = em.find(Locker.class, member.getLocker().getId());
-            System.out.println(findLocker.getMember().getUserName());
+            em.flush();
+            em.clear();
+
+            Movie findMovie = em.find(Movie.class, movie.getId());
+            System.out.println("findMovie = " + findMovie);
 
             ex.commit();
         } catch (Exception e) {

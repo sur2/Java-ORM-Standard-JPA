@@ -478,3 +478,44 @@ private List<Member> members = new ArrayList<>();
 - 객체는 다대다 관계가 가능
   - 연결 테이블이 추가됨으로 의도한 쿼리를 사용하기 어려움
 
+
+
+## 고급 매핑
+
+### 상속관계 매핑
+
+- 관계형 데이터베이스는 상속 관계가 없음
+- 슈퍼타입 서브타입 관계와 유사함
+
+#### 전략
+
+- 조인 전략: 부모 클래스에 해당하는 테이블과 자식 클래스에 해당하는 테이블을 조인
+
+  ```java
+  @Inheritance(strategy = InheritanceType.JOINED)
+  ```
+
+  - 부모 클래스에 해당하는 테이블에 DTYPE Column 권장 (``@DiscriminatorColumn``)
+  - ``@DiscriminatorValue("name")``: name을 수정하여 DTYPE의 값을 정할 수 있다.
+  - 가장 많이 사용되는 전략이다. (단, 조인을 많이 사용할 수록 성능이 저하된다.)
+
+- 단일 테이블 전략: 자식 클래스들의 모든 필드를 가지는 하나의 테이블 구현
+
+  ```java
+  @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+  ```
+
+  - 단일 테이블의 경우 DTYPE Column은 필수(``@DiscriminatorColumn``을 생략해도 생성됨)
+  - 조인을 하지 않기 때문에 성능이 좋다. (단, 테이블이 많이지면 성능을 기대하기 어려움)
+  - 테이블이 단순하다면 추천한다.
+
+- 클래스 단위 테이블 전략: 자식 클래스마다 테이블 구현
+
+  ```java
+  @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+  ```
+
+  - 복잡한 쿼리를 유발할 수 있는 단점이 존재
+    (다형성을 이용하여 조회할 경우 Union을 사용하여 모든 테이블을 조회하기 때문에 비효율적임)
+  - DBA와 ORM 설계자 모두 권장하지 않음
+
