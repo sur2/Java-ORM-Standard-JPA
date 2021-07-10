@@ -517,7 +517,7 @@ private List<Member> members = new ArrayList<>();
 
   - 복잡한 쿼리를 유발할 수 있는 단점이 존재
     (다형성을 이용하여 조회할 경우 Union을 사용하여 모든 테이블을 조회하기 때문에 비효율적임)
-  - DBA와 ORM 설계자 모두 권장하지 않음
+  - DBA와 ORM 설계자 모두 **권장하지 않음**
 
 
 
