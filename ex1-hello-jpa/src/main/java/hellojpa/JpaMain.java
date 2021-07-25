@@ -16,14 +16,21 @@ public class JpaMain {
         ex.begin();
         try {
 
-            Member member = new Member();
-            member.setCreateBy("Kim");
-            member.setCreateDate(LocalDateTime.now());
+            Member member1 = new Member();
+            member1.setUserName("hello1");
+            em.persist(member1);
 
-            em.persist(member);
+            Member member2 = new Member();
+            member2.setUserName("hello2");
+            em.persist(member2);
 
             em.flush();
             em.clear();
+
+            Member m1 = em.find(Member.class, member1.getId());
+            Member m2 = em.find(Member.class, member2.getId());
+
+            System.out.println("m1 == m2: " + (m1.getClass() == m2.getClass()));
 
             ex.commit();
         } catch (Exception e) {
