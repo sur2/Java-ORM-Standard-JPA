@@ -1,5 +1,7 @@
 package hellojpa;
 
+import org.hibernate.Hibernate;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
@@ -27,14 +29,16 @@ public class JpaMain {
             em.flush();
             em.clear();
 
-            Member m1 = em.find(Member.class, member1.getId());
-            Member m2 = em.find(Member.class, member2.getId());
-
-            System.out.println("m1 == m2: " + (m1.getClass() == m2.getClass()));
+            Member refMember = em.getReference(Member.class, member1.getId());
+            System.out.println("refMember = " + refMember.getClass()); // Proxy
+            refMember.getUserName();
+            System.out.println("isLoad = " + emf.getPersistenceUnitUtil().isLoaded(refMember));
+            Hibernate.initialize(refMember);
 
             ex.commit();
         } catch (Exception e) {
             ex.rollback();
+            e.printStackTrace();
         } finally {
             em.clear();
         }

@@ -553,4 +553,16 @@ private List<Member> members = new ArrayList<>();
 - 프록시 객체는 처음 사용할 때 한 번만 초기화 
 - 프록시 객체는 초기화 시 실제 객체가 되지 않는다. (다만, 타겟에 실제 객체를 참조 할 뿐임.)
   - 타입 체크 시 ``instance of`` 사용 필수! (Type 비교에 ``==``는 사용하지 않는다.)
+  
+- 영속성 컨텍스트에 찾는 엔티티가 이미 있으면 ``em.getReference()``를 호출해도 **실제 엔티티** 반환
+  - 처음부터 프록시로 조회 할 경우 ``em.find()``를 해도 프록시로 반환
 
+- 준영속 상태일 때  프록시 초기화 불가능(org.hibernate.LazyInitializationException)
+  - 영속성 컨텍스트에서 DB 조회가 일어나기 때문
+
+#### 프록시 확인
+
+- 프록시 초기화 여부 확인 ``emf.getPersistenceUnitUtil().isLoaded(proxy_object)``
+
+- 프록시 클래스 확인 ``proxy_object.getClass()``
+- 프록시 강제 초기화 ``Hibernate.initialize(proxy_object)``
