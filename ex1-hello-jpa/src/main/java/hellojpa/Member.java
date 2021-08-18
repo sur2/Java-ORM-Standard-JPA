@@ -1,5 +1,7 @@
 package hellojpa;
 
+import org.hibernate.annotations.Fetch;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -16,7 +18,7 @@ public class Member extends BaseEntity {
     @Column(name = "USER_NAME")
     private String userName;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "TEAM_ID")
     private Team team;
 

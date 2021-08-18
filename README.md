@@ -563,6 +563,40 @@ private List<Member> members = new ArrayList<>();
 #### 프록시 확인
 
 - 프록시 초기화 여부 확인 ``emf.getPersistenceUnitUtil().isLoaded(proxy_object)``
-
 - 프록시 클래스 확인 ``proxy_object.getClass()``
 - 프록시 강제 초기화 ``Hibernate.initialize(proxy_object)``
+
+
+
+### 즉시 로딩과 지연 로딩
+
+#### 지연 로딩 (LAZY)
+
+- ```java
+  @ManyToOne(fetch = FetchType.LAZY)
+  ```
+
+- 프록시로 조회, 실제 객체는 사용되기 전까지 초기화 되지 않음
+
+#### 즉시 로딩 (EAGER)
+
+- ```
+  @ManyToOne(fetch = FetchType.EAGER)
+  ```
+
+- join될 객체를 함께 조회, 실제 객체를 초기화하기 때문에 바로 사용가능
+
+#### 주의
+
+- **가급적 지연 로딩만 사용(특히 실무에서)**
+- 즉시 로딩을 적용하면 예기치 못한 SQL이 발생
+- **즉시 로딩은 JPQL에서 N+1 문제 발생 (N: JOIN된 테이블 쿼리, 1: 의도한 테이블 쿼리)** 
+- **@ManyToOne, @OneToOne은 기본이 즉시 로딩이기 때문에 지연 로딩(LAZY)으로 변경 권장**
+  - @OneToMany, @ManyToMany는 기본이 지연 로딩(LAZY)
+
+#### 지연 로딩 활용
+
+- **모든 연관관계에 지연 로딩을 사용해라!**
+- **실무에서 즉시 로딩을 사용하지 마라!**
+- **필요에 따라 JPQL fetch 조인이나, 엔티티 그래프 기능을 사용해라!**
+
