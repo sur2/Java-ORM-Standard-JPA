@@ -600,3 +600,40 @@ private List<Member> members = new ArrayList<>();
 - **실무에서 즉시 로딩을 사용하지 마라!**
 - **필요에 따라 JPQL fetch 조인이나, 엔티티 그래프 기능을 사용해라!**
 
+
+
+### 영속성 전이(CASCADE)와 고아 객체
+
+#### 영속성 전이(CASCADE)
+
+- ```java
+  @OneToOne(CascadeType.ALL), @OneToMany
+  ```
+
+
+#### 영속성 전이: CASCADE - 주의!
+
+- 영속성 전이는 연관관계를 매핑하는 것과 아무 관련이 없음
+- 엔티티를 영속화 할 때 연관된 엔티티도 함께 영속화되는 편리함 제공(연쇄)
+- 두 엔티티가 같은 사이클을 가질 때만 사용, 연관된 두 엔티티까지만 사용을 권장(셋 이상의 엔티티 금지)
+
+#### 고아 객체
+
+- 고아 객체 제거: 부모 엔티티와 연관관계가 끊어진 자식 엔티티를 자동으로 삭제
+
+- ```java
+  @OneToOne(orphanRemoval = true/false), @OneToMany
+  ```
+
+#### 고아 객체 - 주의
+
+- **참조하는 곳이 하나일 때만 사용!**
+- **특정 엔티티가 개인 소유할 때 사용**
+  - ``@OneToOne``, ``@OneToMany`` 만 사용
+
+#### 영속성 전이 + 고아 객체 : 생명주기
+
+- **(CascadeType.ALL + orphanRemovel = ture)** 
+- 두 옵션을 통해 부모 엔티티를 통해서 자식 엔티티의 사이클을 관리할 수 있음
+- 도메인 주도 설계(DDD)의 Aggregate Root개념을 구현할 때 유용
+
